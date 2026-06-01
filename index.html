@@ -394,19 +394,64 @@
 <section data-screen-label="Creative DNA">
   <div class="sec-mark"><span class="dot"></span>Creative DNA · 08</div>
   <div class="wrap-wide">
-    <p class="kicker reveal">Visual Mood</p>
-    <h2 class="h-1 reveal" style="--delay:90ms;">Sacred desert.<br>Industrial empire. <span class="amber">Cosmic root.</span></h2>
-    <p class="body dim reveal" style="--delay:170ms;max-width:700px;margin-top:22px;">High contrast and desaturated base tones with single-color accents that punch hard — the aesthetic and moral weight of a World-War-era conflict fused with interdimensional science-fantasy.</p>
 
-    <div class="tone-grid">
-      <div class="tone-tile reveal" style="--delay:60ms;"><img src="assets/img/tone-aircraft.jpg" alt="A fighter craft firing through smoke-streaked skies"><div class="cap"><span>Aerial Combat</span><span class="n">01</span></div></div>
-      <div class="tone-tile reveal" style="--delay:130ms;"><img src="assets/img/tone-desertduo.jpg" alt="Two figures crossing a blasted orange desert"><div class="cap"><span>Survival</span><span class="n">02</span></div></div>
-      <div class="tone-tile reveal" style="--delay:200ms;"><img src="assets/img/tone-skycity.jpg" alt="Monolithic architecture rising into the clouds"><div class="cap"><span>Empire Scale</span><span class="n">03</span></div></div>
-      <div class="tone-tile reveal" style="--delay:270ms;"><img src="assets/img/tone-pyramid.jpg" alt="A pyramid silhouetted against an eclipse and burning sky"><div class="cap"><span>Ancient Myth</span><span class="n">04</span></div></div>
-      <div class="tone-tile reveal" style="--delay:340ms;"><img src="assets/img/tone-war.jpg" alt="A soldier firing across a ruined battlefield"><div class="cap"><span>The War</span><span class="n">05</span></div></div>
-      <div class="tone-tile reveal" style="--delay:410ms;"><img src="assets/img/tone-cliffcity.jpg" alt="A desert city tower carved into a sandstone cliff"><div class="cap"><span>Carved Cities</span><span class="n">06</span></div></div>
-      <div class="tone-tile reveal" style="--delay:480ms;"><img src="assets/img/tone-lone.jpg" alt="A lone figure in the ruins of a desert metropolis"><div class="cap"><span>Aftermath</span><span class="n">07</span></div></div>
-      <div class="tone-tile reveal" style="--delay:550ms;"><img src="assets/img/tone-sunset.jpg" alt="A still wetland at oversaturated sunset"><div class="cap"><span>Transform</span><span class="n">08</span></div></div>
+    <div class="gallery-section">
+      <div class="gallery-info">
+        <p class="kicker reveal">Visual Mood</p>
+        <h2 class="h-1 reveal" style="--delay:90ms;">Sacred desert.<br>Industrial empire. <span class="amber">Cosmic root.</span></h2>
+        <p class="body dim reveal" style="--delay:170ms;max-width:700px;margin-top:22px;">High contrast and desaturated base tones with single-color accents that punch hard — the aesthetic and moral weight of a World-War-era conflict fused with interdimensional science-fantasy.</p>
+
+        <div class="gallery-status" style="margin-top:20px;">
+          <span class="status-dot" id="dna-status-dot"></span>
+          <span class="status-text" id="dna-status-text">Streaming</span>
+        </div>
+      </div>
+
+      <div class="filmstrip-container" id="dna-filmstrip-container">
+        <div class="carousel-track" id="dna-carousel-track">
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-aircraft.jpg" alt="A fighter craft firing through smoke-streaked skies" class="zoomable">
+            <div class="carousel-item-cap">Aerial Combat · 01</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-desertduo.jpg" alt="Two figures crossing a blasted orange desert" class="zoomable">
+            <div class="carousel-item-cap">Survival · 02</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-skycity.jpg" alt="Monolithic architecture rising into the clouds" class="zoomable">
+            <div class="carousel-item-cap">Empire Scale · 03</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-pyramid.jpg" alt="A pyramid silhouetted against an eclipse and burning sky" class="zoomable">
+            <div class="carousel-item-cap">Ancient Myth · 04</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-war.jpg" alt="A soldier firing across a ruined battlefield" class="zoomable">
+            <div class="carousel-item-cap">The War · 05</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-cliffcity.jpg" alt="A desert city tower carved into a sandstone cliff" class="zoomable">
+            <div class="carousel-item-cap">Carved Cities · 06</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-lone.jpg" alt="A lone figure in the ruins of a desert metropolis" class="zoomable">
+            <div class="carousel-item-cap">Aftermath · 07</div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="assets/img/tone-sunset.jpg" alt="A still wetland at oversaturated sunset" class="zoomable">
+            <div class="carousel-item-cap">Transform · 08</div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
     <p class="kicker reveal" style="margin-top:70px;">Tone Reference Matrix</p>
@@ -876,6 +921,51 @@ document.addEventListener('keydown', e => {
   const container = document.getElementById('filmstrip-container');
   const dot = document.getElementById('status-dot');
   const text = document.getElementById('status-text');
+  
+  let hoverTimeout = null;
+  
+  if (container) {
+    container.addEventListener('mouseenter', () => {
+      if (track) track.classList.add('paused');
+      if (dot) dot.classList.add('paused');
+      if (text) text.textContent = 'Paused (Resumes in 7s)';
+      
+      hoverTimeout = setTimeout(() => {
+        if (track) {
+          track.classList.remove('paused');
+          track.classList.add('forced-resume');
+        }
+        if (dot) dot.classList.remove('paused');
+        if (text) text.textContent = 'Streaming';
+      }, 7000);
+    });
+    
+    container.addEventListener('mouseleave', () => {
+      clearTimeout(hoverTimeout);
+      if (track) {
+        track.classList.remove('paused');
+        track.classList.remove('forced-resume');
+      }
+      if (dot) dot.classList.remove('paused');
+      if (text) text.textContent = 'Streaming';
+    });
+  }
+})();
+
+/* ---------- Creative DNA vertical carousel ---------- */
+(function(){
+  const track = document.getElementById('dna-carousel-track');
+  if(!track) return;
+  
+  const children = Array.from(track.children);
+  children.forEach(el => {
+    const clone = el.cloneNode(true);
+    track.appendChild(clone);
+  });
+  
+  const container = document.getElementById('dna-filmstrip-container');
+  const dot = document.getElementById('dna-status-dot');
+  const text = document.getElementById('dna-status-text');
   
   let hoverTimeout = null;
   
