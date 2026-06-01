@@ -585,10 +585,34 @@
 <!-- ===================== LIGHTBOX ===================== -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
   <button class="lb-close" id="lb-close" aria-label="Close image">✕</button>
+  
+  <!-- Navigation arrows (only visible for gallery images) -->
+  <button class="lb-nav prev" id="lb-prev" aria-label="Previous image">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path></svg>
+  </button>
+  <button class="lb-nav next" id="lb-next" aria-label="Next image">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg>
+  </button>
+  
+  <!-- Grid View Toggle Button (only visible for gallery images) -->
+  <button class="lb-grid-btn" id="lb-grid-btn" aria-label="Show all gallery images">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zM16 4v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"></path></svg>
+    <span>Archive Grid</span>
+  </button>
+
   <figure class="lb-figure">
     <img id="lb-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="">
     <figcaption id="lb-cap"></figcaption>
   </figure>
+
+  <!-- Grid View Overlay -->
+  <div class="lb-grid-overlay" id="lb-grid-overlay" role="dialog" aria-modal="true" aria-label="Gallery Grid View">
+    <div class="lb-grid-header">
+      <h3>CINEMATIC ARCHIVE GRID</h3>
+      <button class="lb-grid-close" id="lb-grid-close" aria-label="Close grid view">✕</button>
+    </div>
+    <div class="lb-grid-content" id="lb-grid-content"></div>
+  </div>
 </div>
 
 <!-- ===================== STICKY THEME PLAYER ===================== -->
@@ -687,21 +711,154 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape' && backdrop.classL
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lb-img');
 const lbCap = document.getElementById('lb-cap');
+const lbPrev = document.getElementById('lb-prev');
+const lbNext = document.getElementById('lb-next');
+const lbGridBtn = document.getElementById('lb-grid-btn');
+const lbGridOverlay = document.getElementById('lb-grid-overlay');
+const lbGridClose = document.getElementById('lb-grid-close');
+const lbGridContent = document.getElementById('lb-grid-content');
+
 let lbLast = null;
+let activeGalleryIndex = -1;
+
+const GALLERY_IMAGES = [
+  { src: "assets/img/allied-01.jpg", cap: "The Allied Capital, After Dark — art-deco towers and electric haze" },
+  { src: "assets/img/allied-02.jpg", cap: "Boulevard of the Won — An Allied boulevard beneath gilded spires" },
+  { src: "assets/img/allied-03.jpg", cap: "The Streamliner — A streamline locomotive arrives at a grand Allied terminus" },
+  { src: "assets/img/allied-04.jpg", cap: "Pullman Arcade — A streamline express berthed in a marble arcade" },
+  { src: "assets/img/axis-01.png", cap: "The Foundry Districts — An Axis stronghold of copper domes and iron foundries" },
+  { src: "assets/img/axis-02.jpg", cap: "The Great Arch — The great pneumatic arch spanning an Axis avenue" },
+  { src: "assets/img/axis-03.jpg", cap: "Domes of Axuria — Copper cathedral-domes of the Axis capital at dusk" },
+  { src: "assets/img/uan-conduit.png", cap: "The U.A.N. Conduit Grid — Glowing crystal conduits and art-deco machinery" },
+  { src: "assets/img/isa-bond.png", cap: "The I.S.A. Bond System — Desert warrior with animal companion in tactical gear" },
+  { src: "assets/img/civilians.png", cap: "Displaced Civilians in the Space Between — Exhausted displaced civilians in the war zone" },
+  { src: "assets/img/isa-market.png", cap: "Desert Marketplace, Axuria — Desert marketplace carved into sandstone" },
+  { src: "assets/img/tone-aircraft.jpg", cap: "Aerial Combat Beat — A fighter craft firing through smoke-streaked skies" },
+  { src: "assets/img/tone-desertduo.jpg", cap: "Survival in the Grey Zone — Two figures crossing a blasted orange desert" },
+  { src: "assets/img/tone-pyramid.jpg", cap: "Ancient Myth of the Fountain — A pyramid silhouetted against an eclipse and burning sky" },
+  { src: "assets/img/tone-sunset.jpg", cap: "Transformation Concept — A still wetland at oversaturated sunset" }
+];
+
+// Populate the grid view thumbnails at load time
+if (lbGridContent) {
+  GALLERY_IMAGES.forEach((img, idx) => {
+    const card = document.createElement('div');
+    card.className = 'lb-grid-card';
+    card.innerHTML = `
+      <img src="${img.src}" alt="${img.cap}">
+      <div class="lb-grid-card-cap">${img.cap.split(' — ')[0]}</div>
+    `;
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      activeGalleryIndex = idx;
+      updateLightboxToImage(idx);
+      closeGridOverlay();
+    });
+    lbGridContent.appendChild(card);
+  });
+}
+
+function getGalleryImageIndex(src) {
+  if (!src) return -1;
+  // Normalize src to search for local path matches (e.g. assets/img/...)
+  const idx = src.indexOf('assets/');
+  if (idx === -1) return -1;
+  const cleanSrc = src.substring(idx);
+  return GALLERY_IMAGES.findIndex(img => img.src === cleanSrc);
+}
+
+function updateLightboxToImage(index) {
+  if (index < 0 || index >= GALLERY_IMAGES.length) return;
+  const imgData = GALLERY_IMAGES[index];
+  lbImg.src = imgData.src;
+  lbImg.alt = imgData.cap;
+  lbCap.textContent = imgData.cap;
+}
+
 function openLightbox(im){
   lbLast = document.activeElement;
+  const srcAttr = im.getAttribute('src');
+  const galleryIdx = getGalleryImageIndex(srcAttr);
+  
   lbImg.src = im.currentSrc || im.src;
   lbImg.alt = im.alt || '';
   lbCap.textContent = im.getAttribute('data-cap') || im.alt || '';
+  
+  if (galleryIdx !== -1) {
+    activeGalleryIndex = galleryIdx;
+    lb.classList.add('has-nav');
+    updateLightboxToImage(galleryIdx);
+  } else {
+    activeGalleryIndex = -1;
+    lb.classList.remove('has-nav');
+  }
+  
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('lb-close').focus();
 }
+
 function closeLightbox(){
+  closeGridOverlay();
   lb.classList.remove('open');
   if(!backdrop.classList.contains('open')) document.body.style.overflow = '';
   if(lbLast) lbLast.focus();
 }
+
+function openGridOverlay() {
+  if (lbGridOverlay) lbGridOverlay.classList.add('open');
+}
+
+function closeGridOverlay() {
+  if (lbGridOverlay) lbGridOverlay.classList.remove('open');
+}
+
+// Navigation arrow events
+if (lbPrev) {
+  lbPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (activeGalleryIndex !== -1) {
+      activeGalleryIndex = (activeGalleryIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+      updateLightboxToImage(activeGalleryIndex);
+    }
+  });
+}
+
+if (lbNext) {
+  lbNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (activeGalleryIndex !== -1) {
+      activeGalleryIndex = (activeGalleryIndex + 1) % GALLERY_IMAGES.length;
+      updateLightboxToImage(activeGalleryIndex);
+    }
+  });
+}
+
+// Grid overlay toggle events
+if (lbGridBtn) {
+  lbGridBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openGridOverlay();
+  });
+}
+
+if (lbGridClose) {
+  lbGridClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeGridOverlay();
+  });
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (lb.classList.contains('open') && activeGalleryIndex !== -1) {
+    if (e.key === 'ArrowRight') {
+      lbNext.click();
+    } else if (e.key === 'ArrowLeft') {
+      lbPrev.click();
+    }
+  }
+});
 
 /* ---------- cinematic gallery vertical carousel ---------- */
 (function(){

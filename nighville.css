@@ -1153,6 +1153,210 @@ img.zoomable:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px
   }
 }
 
+/* ---------- Lightbox Upgrades ---------- */
+/* Hide navigation and grid elements by default */
+.lightbox .lb-nav,
+.lightbox .lb-grid-btn {
+  display: none;
+}
+
+/* Show them only when lightbox has-nav class is present */
+.lightbox.has-nav .lb-nav {
+  display: flex;
+}
+.lightbox.has-nav .lb-grid-btn {
+  display: flex;
+}
+
+/* Navigation Arrows */
+.lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(13, 13, 18, 0.6);
+  border: 1px solid rgba(232, 226, 213, 0.15);
+  color: var(--pale);
+  cursor: pointer;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+.lb-nav:hover, .lb-nav:focus {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #0d0d12;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+.lb-nav.prev {
+  left: 30px;
+}
+.lb-nav.next {
+  right: 30px;
+}
+.lb-nav svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+/* Archive Grid Button */
+.lb-grid-btn {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(13, 13, 18, 0.85);
+  border: 1px solid var(--gilt);
+  color: var(--gilt);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+.lb-grid-btn:hover, .lb-grid-btn:focus {
+  background: var(--gilt);
+  color: #0d0d12;
+  box-shadow: 0 0 15px rgba(212, 168, 72, 0.4);
+}
+.lb-grid-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* Grid Overlay */
+.lb-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 9, 12, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  padding: 40px;
+  overflow-y: auto;
+}
+.lb-grid-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Grid Header */
+.lb-grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(232, 226, 213, 0.1);
+  padding-bottom: 20px;
+}
+.lb-grid-header h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--gilt);
+  margin: 0;
+  letter-spacing: 0.1em;
+}
+.lb-grid-close {
+  background: none;
+  border: none;
+  color: var(--pale);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.lb-grid-close:hover {
+  color: var(--amber);
+}
+
+/* Grid Content */
+.lb-grid-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding-bottom: 40px;
+}
+.lb-grid-card {
+  position: relative;
+  background: #131318;
+  border: 1px solid rgba(232, 226, 213, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.lb-grid-card:hover {
+  border-color: var(--amber);
+  transform: translateY(-4px);
+}
+.lb-grid-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.85);
+  transition: filter 0.3s;
+}
+.lb-grid-card:hover img {
+  filter: brightness(1.05);
+}
+.lb-grid-card-cap {
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--pale-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #0f0f14;
+}
+
+/* Make sure close button is on top of grid view button */
+.lightbox .lb-close {
+  z-index: 150;
+}
+
+/* Mobile responsive fixes */
+@media (max-width: 768px) {
+  .lb-nav {
+    width: 44px;
+    height: 44px;
+  }
+  .lb-nav.prev {
+    left: 10px;
+  }
+  .lb-nav.next {
+    right: 10px;
+  }
+  .lb-grid-overlay {
+    padding: 20px;
+  }
+  .lb-grid-content {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+  .lb-grid-card img {
+    height: 90px;
+  }
+}
+
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
