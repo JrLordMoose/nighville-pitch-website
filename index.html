@@ -422,6 +422,109 @@
 </section>
 
 
+<!-- ===================== 09 · MASTER GALLERY ===================== -->
+<section data-screen-label="Gallery">
+  <div class="sec-mark"><span class="dot"></span>Master Gallery · 09</div>
+  
+  <div class="wrap-wide">
+    <div class="gallery-section">
+      <div class="gallery-info reveal">
+        <p class="kicker gilt" style="font-family: var(--font-isa); letter-spacing: 0.15em; font-size: 14px; margin-bottom: 24px;">Cinematic Archive</p>
+        <h2 class="h-display" style="margin-bottom: 30px; font-size: clamp(38px, 5vw, 68px); line-height: 1.1;">VISUAL DNA<br>OF NIGHVILLE</h2>
+        <p class="body dim" style="margin-bottom: 24px; font-size: 16px; line-height: 1.7;">A curated scroll of the project's visual development, environment concepts, and world dynamics. These images capture the grand scale of U.A.N. brutalist-baroque metropolises, the sandstone sovereign cities of the I.S.A., the harsh realities of the war zone, and the intimate emotional depth of the character journeys.</p>
+        <p class="body" style="font-style: italic; color: var(--amber); font-size: 15px; margin-bottom: 0;">Hover over the cinematic filmstrip to pause and examine any canvas in detail. The stream automatically resumes after 7 seconds.</p>
+        
+        <div class="gallery-status">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="status-text" id="status-text">Streaming</span>
+        </div>
+      </div>
+      
+      <div class="filmstrip-container reveal" id="filmstrip-container" style="--delay: 120ms;">
+        <div class="carousel-track" id="carousel-track">
+          
+          <div class="carousel-item">
+            <img src="assets/img/allied-01.jpg" alt="The Allied capital after dark — art-deco towers and electric haze" class="zoomable">
+            <div class="carousel-item-cap">The Allied Capital, After Dark</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/allied-02.jpg" alt="An Allied boulevard beneath gilded spires" class="zoomable">
+            <div class="carousel-item-cap">Boulevard of the Won</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/allied-03.jpg" alt="A streamline locomotive arrives at a grand Allied terminus" class="zoomable">
+            <div class="carousel-item-cap">The Streamliner</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/allied-04.jpg" alt="A streamline express berthed in a marble arcade" class="zoomable">
+            <div class="carousel-item-cap">Pullman Arcade</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/axis-01.png" alt="An Axis stronghold of copper domes and iron foundries" class="zoomable">
+            <div class="carousel-item-cap">The Foundry Districts</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/axis-02.jpg" alt="The great pneumatic arch spanning an Axis avenue" class="zoomable">
+            <div class="carousel-item-cap">The Great Arch</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/axis-03.jpg" alt="Copper cathedral-domes of the Axis capital at dusk" class="zoomable">
+            <div class="carousel-item-cap">Domes of Axuria</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/uan-conduit.png" alt="Glowing crystal conduits and art-deco machinery" class="zoomable">
+            <div class="carousel-item-cap">The U.A.N. Conduit Grid</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/isa-bond.png" alt="Desert warrior with animal companion in tactical gear" class="zoomable">
+            <div class="carousel-item-cap">The I.S.A. Bond System</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/civilians.png" alt="Exhausted displaced civilians in the war zone" class="zoomable">
+            <div class="carousel-item-cap">Displaced Civilians in the Space Between</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/isa-market.png" alt="Desert marketplace carved into sandstone" class="zoomable">
+            <div class="carousel-item-cap">Desert Marketplace, Axuria</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/tone-aircraft.jpg" alt="A fighter craft firing through smoke-streaked skies" class="zoomable">
+            <div class="carousel-item-cap">Aerial Combat Beat</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/tone-desertduo.jpg" alt="Two figures crossing a blasted orange desert" class="zoomable">
+            <div class="carousel-item-cap">Survival in the Grey Zone</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/tone-pyramid.jpg" alt="A pyramid silhouetted against an eclipse and burning sky" class="zoomable">
+            <div class="carousel-item-cap">Ancient Myth of the Fountain</div>
+          </div>
+          
+          <div class="carousel-item">
+            <img src="assets/img/tone-sunset.jpg" alt="A still wetland at oversaturated sunset" class="zoomable">
+            <div class="carousel-item-cap">Transformation Concept</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ===================== FOOTER ===================== -->
 <footer data-screen-label="Footer">
   <div class="footer-inner">
@@ -438,9 +541,9 @@
 </footer>
 
 
-<!-- ===================== 09 · CREDITS ===================== -->
+<!-- ===================== 10 · CREDITS ===================== -->
 <section id="credits" data-screen-label="Credits">
-  <div class="sec-mark"><span class="dot"></span>Image Sources &amp; Credits · 09</div>
+  <div class="sec-mark"><span class="dot"></span>Image Sources &amp; Credits · 10</div>
   <div class="wrap">
     <div class="credits-head">
       <p class="kicker gilt reveal">For Visual Reference Only</p>
@@ -599,6 +702,48 @@ function closeLightbox(){
   if(!backdrop.classList.contains('open')) document.body.style.overflow = '';
   if(lbLast) lbLast.focus();
 }
+
+/* ---------- cinematic gallery vertical carousel ---------- */
+(function(){
+  const track = document.getElementById('carousel-track');
+  if(!track) return;
+  
+  // Clone all elements inside track once for infinite vertical scroll
+  const children = Array.from(track.children);
+  children.forEach(el => {
+    const clone = el.cloneNode(true);
+    track.appendChild(clone);
+  });
+  
+  // Setup pause-on-hover logic with 7-second automatic resume
+  const container = document.getElementById('filmstrip-container');
+  const dot = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+  
+  let hoverTimeout = null;
+  
+  container.addEventListener('mouseenter', () => {
+    track.classList.add('paused');
+    if (dot) dot.classList.add('paused');
+    if (text) text.textContent = 'Paused (Resumes in 7s)';
+    
+    hoverTimeout = setTimeout(() => {
+      track.classList.remove('paused');
+      track.classList.add('forced-resume');
+      if (dot) dot.classList.remove('paused');
+      if (text) text.textContent = 'Streaming';
+    }, 7000);
+  });
+  
+  container.addEventListener('mouseleave', () => {
+    clearTimeout(hoverTimeout);
+    track.classList.remove('paused');
+    track.classList.remove('forced-resume');
+    if (dot) dot.classList.remove('paused');
+    if (text) text.textContent = 'Streaming';
+  });
+})();
+
 const ZOOM_SEL = '.gtile img, .dsheet img, .faction-art img, .faction-strip img, .tone-tile img, #cm-img, .zoomable, .tech-col-img, .world-panel-img';
 document.querySelectorAll(ZOOM_SEL).forEach(im=>{
   im.classList.add('zoomable');
