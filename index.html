@@ -599,7 +599,7 @@ function closeLightbox(){
   if(!backdrop.classList.contains('open')) document.body.style.overflow = '';
   if(lbLast) lbLast.focus();
 }
-const ZOOM_SEL = '.gtile img, .dsheet img, .faction-art img, .faction-strip img, .tone-tile img, #cm-img';
+const ZOOM_SEL = '.gtile img, .dsheet img, .faction-art img, .faction-strip img, .tone-tile img, #cm-img, .zoomable, .tech-col-img, .world-panel-img';
 document.querySelectorAll(ZOOM_SEL).forEach(im=>{
   im.classList.add('zoomable');
   im.setAttribute('tabindex','0');
