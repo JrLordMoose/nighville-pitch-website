@@ -812,6 +812,8 @@ img.zoomable:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px
 .tp-range:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
 /* ============================== responsive ============================== */
+
+/* ---------- tablets & small laptops ---------- */
 @media (max-width: 1100px) {
   .chars-grid { grid-template-columns: repeat(2, 1fr); }
   .tone-grid { grid-template-columns: repeat(2, 1fr); }
@@ -823,7 +825,7 @@ img.zoomable:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px
   .hero-bottom .right { justify-self: start; text-align: left; }
   .hero-bottom .right .logline { margin-left: 0; }
   .cmodal { grid-template-columns: 1fr; }
-  .cmodal .cm-img { min-height: 320px; aspect-ratio: 16/10; }
+  .cmodal .cm-img { min-height: 280px; aspect-ratio: 16/10; }
   .world-tech-grid { grid-template-columns: 1fr; }
   .world-three-panel { grid-template-columns: 1fr; }
   .world-panel.center { transform: none; box-shadow: none; }
@@ -831,14 +833,183 @@ img.zoomable:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px
   .ecard { min-height: auto; }
   .ecard-body { max-height: 800px; opacity: 1; margin-top: 10px; }
 }
+
+/* ---------- phones (landscape & large phones) ---------- */
+@media (max-width: 760px) {
+  /* hero chrome: stack on smaller screens to prevent overflow */
+  .hero-chrome {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 10px;
+    padding: 20px var(--gutter);
+  }
+  .hero-chrome .left { flex-wrap: wrap; gap: 8px; }
+
+  /* hero body spacing */
+  .hero-body { padding: 16px var(--gutter) 70px; gap: 24px; }
+  .hero-quote { font-size: 16px; max-width: 100%; }
+  .hero-tag .comps { font-size: 14px; }
+
+  /* section padding reduced on mobile */
+  section { padding: clamp(56px, 8vh, 100px) 0; }
+  .sec-mark { font-size: 10px; letter-spacing: 0.22em; top: 20px; }
+
+  /* gallery grids */
+  .gallery-grid.g4, .gallery-grid.g3 { grid-template-columns: 1fr 1fr; grid-auto-rows: 170px; }
+  .gtile.wide { grid-row: span 1; }
+  .design-grid { grid-template-columns: 1fr; }
+
+  /* character modal */
+  .cmodal .cm-img { min-height: 240px; }
+  .cmodal .cm-body { padding: 28px 20px; }
+  .cmodal .cm-stats { grid-template-columns: 1fr; gap: 14px; }
+  .cmodal .cm-alias { font-size: 16px; }
+  .cmodal .cm-bio { font-size: 15px; }
+
+  /* world within war */
+  .world-tech-col { padding: 24px 18px; }
+  .tech-col-img { height: 140px; }
+  .world-panel { padding: 24px 18px; }
+  .world-panel-img { height: 120px; }
+  .ecard { padding: 28px 20px; }
+  .ecard-quote { font-size: 20px; }
+
+  /* theme player */
+  .tp-controls { padding: 10px 14px; }
+  .tp-scrubber { width: 160px; }
+}
+
+/* ---------- phones (portrait) ---------- */
 @media (max-width: 640px) {
   .chars-grid, .tone-grid { grid-template-columns: 1fr; }
   .fountain-stats { grid-template-columns: 1fr; }
   .faction-strip { grid-template-columns: 1fr 1fr; }
-  .cmodal .cm-body { padding: 32px 26px; }
-  .hero-wordmark { font-size: clamp(64px, 26vw, 120px); }
-  .tp-controls { padding: 8px 12px; }
-  .tp-scrubber { width: 140px; }
+  .hero-wordmark { font-size: clamp(56px, 22vw, 100px); }
+
+  /* prevent horizontal overflow from large display type */
+  .h-display { font-size: clamp(40px, 12vw, 88px); word-break: break-word; }
+  .h-1 { font-size: clamp(34px, 8vw, 64px); }
+  .h-2 { font-size: clamp(26px, 6vw, 44px); }
+
+  /* hero refinements */
+  .hero-sub { letter-spacing: 0.28em; font-size: 10px; }
+  .hero-bottom .label { font-size: 10px; }
+  .hero-bottom .logline { font-size: 15px; }
+
+  /* faction labels */
+  .faction-label { font-size: 14px; }
+  .faction h3 { font-size: clamp(32px, 8vw, 56px); }
+
+  /* fountain */
+  .fountain h2 { font-size: clamp(48px, 14vw, 100px); }
+  .fountain .sub { font-size: 16px; }
+  .fstat .v { font-size: clamp(22px, 6vw, 32px); }
+
+  /* episodes */
+  .ep { grid-template-columns: 48px 1fr; gap: 14px; }
+  .ep .epno { font-size: 11px; }
+  .ep h4 { font-size: 18px; }
+  .ep p { font-size: 13px; }
+  .eps-phases { gap: 8px; }
+  .phase-chip { font-size: 9px; padding: 7px 10px; }
+
+  /* DNA */
+  .dna .title { font-size: 17px; }
+  .dna .borrow { font-size: 12px; }
+
+  /* footer */
+  .footer-mark { font-size: clamp(40px, 12vw, 72px); }
+  .footer-logos { flex-direction: column; gap: 16px; }
+  .footer-logos .thiink { width: 160px; }
+  .footer-logos .champion { text-align: center; }
+  .footer-contact { font-size: 11px; padding: 11px 22px; }
+
+  /* credits */
+  .credits-toggle .ct-label { font-size: 18px; }
+  .credits-toggle .ct-count { font-size: 10px; }
+  .credits-grid { grid-template-columns: 1fr; }
+
+  /* theme player on small phones */
+  .theme-player { left: 10px; bottom: 10px; }
+  .tp-controls { padding: 8px 10px; border-radius: 5px; }
+  .tp-top { gap: 10px; margin-bottom: 6px; }
+  .tp-btn { width: 42px; height: 42px; }
+  .tp-btn svg { width: 16px; height: 16px; }
+  .tp-title { font-size: 8.5px; padding: 4px 8px; }
+  .tp-scrubber { width: 120px; gap: 6px; }
+  .tp-time { font-size: 9px; min-width: 28px; }
+
+  /* lightbox */
+  .lightbox { padding: 20px 12px; }
+  .lb-figure img { max-width: 96vw; max-height: 75vh; }
+  .lb-close { top: 12px; right: 12px; width: 40px; height: 40px; font-size: 16px; }
+}
+
+/* ---------- very small phones (iPhone SE, etc.) ---------- */
+@media (max-width: 400px) {
+  :root { --gutter: 14px; }
+
+  .hero-chrome { font-size: 9px; letter-spacing: 0.18em; }
+  .hero-wordmark { font-size: clamp(48px, 20vw, 80px); }
+  .hero-sub { letter-spacing: 0.2em; font-size: 9px; }
+  .hero-quote { font-size: 14px; }
+
+  .h-display { font-size: clamp(32px, 11vw, 64px); }
+  .h-1 { font-size: clamp(28px, 7.5vw, 48px); }
+
+  .pull-quote { font-size: clamp(24px, 6vw, 36px); padding-left: 16px; }
+  .pillar { padding: 18px 14px; }
+  .pillar h4 { font-size: 18px; }
+  .pillar p { font-size: 13px; }
+
+  .char-meta .name { font-size: 26px; }
+  .char-meta .alias { font-size: 14px; }
+  .char-meta .bio { font-size: 14px; }
+
+  .faction h3 { font-size: clamp(28px, 7vw, 44px); }
+  .faction-meta .row p { font-size: 14px; }
+
+  .fountain h2 { font-size: clamp(40px, 12vw, 80px); }
+  .fountain .body { font-size: 14px; }
+
+  .ecard-quote { font-size: 18px; }
+  .ecard-body { font-size: 13px; }
+
+  .world-tech-col { padding: 16px 12px; }
+  .tech-item h5 { font-size: 18px; }
+  .tech-item p { font-size: 14px; }
+
+  .world-panel { padding: 18px 14px; }
+  .world-panel h4 { font-size: 22px; }
+  .world-panel p { font-size: 14px; }
+
+  .tp-scrubber { width: 100px; }
+  .tp-btn { width: 38px; height: 38px; }
+
+  .cmodal .cm-body { padding: 22px 16px; }
+  .cmodal .cm-name { font-size: 32px; }
+  .cmodal .cm-alias { font-size: 14px; }
+  .cmodal .cm-bio { font-size: 14px; }
+  .cmodal .cm-stat .v { font-size: 17px; }
+  .cmodal .cm-voice { font-size: 14px; padding: 12px 14px; }
+}
+
+/* ---------- touch-friendly tap targets ---------- */
+@media (hover: none) and (pointer: coarse) {
+  .char-card .more { padding: 8px 0; }
+  .credits-toggle { padding: 20px 2px; min-height: 48px; }
+  .fvid-toggle { padding: 12px 18px 12px 14px; min-height: 44px; }
+  .ecard { cursor: default; }
+  .ecard-body { max-height: 800px; opacity: 1; margin-top: 10px; }
+  .ecard:hover { transform: none; }
+  img.zoomable { cursor: pointer; }
+}
+
+/* ---------- safe-area insets (notched phones) ---------- */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .theme-player { bottom: calc(10px + env(safe-area-inset-bottom)); left: calc(10px + env(safe-area-inset-left)); }
+  .fvid-toggle { bottom: calc(26px + env(safe-area-inset-bottom)); right: calc(26px + env(safe-area-inset-right)); }
 }
 
 /* reduced motion */
